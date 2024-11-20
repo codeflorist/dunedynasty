@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
 project(dunedynasty)
 set(DUNE_DYNASTY_VERSION 1.6.3)
@@ -140,8 +141,15 @@ configure_file("${CMAKE_SOURCE_DIR}/include/buildcfg.h.in" "${PROJECT_BINARY_DIR
 include(cmake/FileList.cmake)
 include_directories("include" "${PROJECT_BINARY_DIR}/include")
 
-add_executable(dunedynasty WIN32
+add_executable(dunedynasty WIN32 MACOSX_BUNDLE
 	${DUNEDYNASTY_SRC_FILES} ${CMAKE_SOURCE_DIR}/src/icon/icon.rc)
+
+set_target_properties(dunedynasty PROPERTIES
+    MACOSX_BUNDLE_BUNDLE_NAME "Dune Dynasty"
+    MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.gameflorist.dunedynasty"
+    MACOSX_BUNDLE_BUNDLE_VERSION "${DUNE_DYNASTY_VERSION}"
+    MACOSX_BUNDLE_SHORT_VERSION_STRING "${DUNE_DYNASTY_VERSION}"
+)
 
 target_link_libraries(dunedynasty
 	${OPTIONAL_LIBRARIES}
