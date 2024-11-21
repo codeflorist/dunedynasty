@@ -18,13 +18,16 @@ jobs:
       - name: Bundle libs
         run: ./scripts/bundle-libs-macos.sh
 
+      - name: Move data-directories to app-folder
+        run: mv ./dist/data ./dist/campaign ./dist/gfx ./dist/music ./dist/dunedynasty.app/Contents/MacOS
+        
       - name: Copy OS specific files
-        run: cp -r ./dist-os-specific/macos/* ./dist
+        run: cp -rf ./dist-os-specific/macos/* ./dist
 
       - name: Test executable
         run: |
           brew uninstall --force --ignore-dependencies argtable sdl2 dumb libogg flac libpng freetype libvorbis ca-certificates openssl@3 opus opusfile physfs theora giflib jpeg-turbo xz lz4 zstd libtiff webp pcre2 gettext glib lame mpg123 libsndfile portaudio readline allegro fluid-synth mad enet
-          cd dist
+          cd dist/dunedynasty.app/Contents/MacOS
           ./dunedynasty | grep "data directory"
 
       - name: Zip dist folder
